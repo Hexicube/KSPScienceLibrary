@@ -233,6 +233,7 @@ public class KSPScienceMonitor : MonoBehaviour
             }
             foreach (ExperimentView experimentView in Output)
             {
+                if (experimentView.EarnedScience >= experimentView.FullScience && !experimentView.OnShip) continue;
                 GUIStyle style = new GUIStyle();
                 if (experimentView.OnShip)
                     style = KSPScienceSettings.getStyleSetting("MonitorOnShipExperiments");

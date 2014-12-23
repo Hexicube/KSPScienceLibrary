@@ -315,7 +315,6 @@ public class KSPScienceLibrary : MonoBehaviour
     {
         if (ResearchAndDevelopment.Instance == null)
             return;
-
         dataOutputList = new List<Experiment>();
         List<ScienceSubject> newExperiments = new List<ScienceSubject>();
         List<string> exIds = ResearchAndDevelopment.GetExperimentIDs();
@@ -351,7 +350,7 @@ public class KSPScienceLibrary : MonoBehaviour
                                 if (id == "asteroidSample") ssj.scienceCap = experiment.scienceCap;
                                 newExperiments.Add(ssj);
                             }
-                            if (body.BiomeMap.Attributes.Length == 0)
+                            if (body.BiomeMap == null || body.BiomeMap.Attributes.Length == 0)
                             {
                                 ScienceSubject ssj = new ScienceSubject(experiment, experimentSituation, body, "");
                                 if (id == "asteroidSample") ssj.scienceCap = experiment.scienceCap;
@@ -403,9 +402,9 @@ public class KSPScienceLibrary : MonoBehaviour
         List<Experiment> selectedExperimentsTemp = new List<Experiment>();
         foreach (Experiment experiment in input)
         {
-            if (experiment.body == body)
+            if (experiment.remain > 0 && experiment.body == body)
             {
-                selectedExperimentsTemp.Add(experiment);
+               selectedExperimentsTemp.Add(experiment);
             }
         }
         return selectedExperimentsTemp;
@@ -418,8 +417,10 @@ public class KSPScienceLibrary : MonoBehaviour
         List<Experiment> selectedExperimentsTemp = new List<Experiment>();
         foreach (Experiment experiment in input)
         {
-            if (experiment.FirstIdType == type)
+            if (experiment.remain > 0 && experiment.FirstIdType == type)
+            {
                 selectedExperimentsTemp.Add(experiment);
+            }
         }
         return selectedExperimentsTemp;
     }
@@ -431,8 +432,10 @@ public class KSPScienceLibrary : MonoBehaviour
         List<Experiment> selectedExperimentsTemp = new List<Experiment>();
         foreach (Experiment experiment in input)
         {
-            if (types.Contains(experiment.FirstIdType))
+            if (experiment.remain > 0 && types.Contains(experiment.FirstIdType))
+            {
                 selectedExperimentsTemp.Add(experiment);
+            }
         }
         return selectedExperimentsTemp;
     }
@@ -456,7 +459,7 @@ public class KSPScienceLibrary : MonoBehaviour
         List<string> selectedExperimentTypesTemp = new List<string>();
         foreach (Experiment experiment in dataOutputList)
         {
-            if (!selectedExperimentTypesTemp.Contains(experiment.FirstIdType))
+            if (experiment.remain > 0 && !selectedExperimentTypesTemp.Contains(experiment.FirstIdType))
                 selectedExperimentTypesTemp.Add(experiment.FirstIdType);
         }
         selectedExperimentTypesTemp.Sort();
